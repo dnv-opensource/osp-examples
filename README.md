@@ -54,6 +54,39 @@ Set-Location PythonFMU
 pythonfmu build -f demoslave.py requirements.txt
 ```
 
+#### PythonFMU host runtime
+
+> [!IMPORTANT]
+> When loading a PythonFMU in a non-Python host on Linux, set `LD_PRELOAD` to
+> the full path of the shared library for the Python runtime that will execute
+> the FMU **before starting the host process**. The library must match the
+> Python version and architecture available on the target system; PythonFMU
+> does not bundle Python.
+>
+> For example, launch the host with:
+>
+> ```bash
+> LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libpython3.11.so cosim run path/to/system
+> ```
+>
+> Replace the example path and version with the `libpython` library installed
+> on your system. Setting `LD_PRELOAD` after the host has already started is
+> too late. This Linux-specific step is needed for non-Python hosts; it is not
+> required when the host process is Python itself.
+>
+> On Windows, `LD_PRELOAD` does not exist. Instead, make the directory
+> containing the matching Python DLL (`python3.dll` or a versioned DLL such as
+> `python311.dll`) available on `PATH` before starting the non-Python host:
+>
+> ```powershell
+> $env:PATH = "C:\Path\To\Python311;$env:PATH"
+> .\cosim.exe run path\to\system
+> ```
+>
+> Use a Python DLL with the same version and architecture as the environment
+> that will execute the FMU. If the DLL is already discoverable by the host,
+> no additional environment change is required.
+
 ### `system/`
 
 This is a runnable OSP system example:
@@ -83,4 +116,6 @@ write simulation results.
 | **libcosim-cli / `cosim`** | Command-line tool for running OSP/SSP simulations and inspecting FMUs. The upstream repository is named `cosim-cli`. | [GitHub repository](https://github.com/open-simulation-platform/cosim-cli) |
 | **libcosimpy** | Python wrapper for libcosim through the C API. | [GitHub repository](https://github.com/open-simulation-platform/libcosimpy) |
 | **libcosimc** | C API wrapping a subset of libcosim. | [GitHub repository](https://github.com/open-simulation-platform/libcosimc) |
+| **cosim-demo-app** | Server-client demo application demonstrating libcosim features. | [GitHub repository](https://github.com/open-simulation-platform/cosim-demo-app) |
+| **demo-cases** | OSP co-simulation cases with `OspSystemStructure.xml` and SSP `SystemStructure.ssd` configurations. | [GitHub repository](https://github.com/open-simulation-platform/demo-cases) |
 | **PythonFMU** | Builds Python model code into FMI 2.0 co-simulation FMUs. | [GitHub repository](https://github.com/NTNU-IHB/PythonFMU) / [PyPI package](https://pypi.org/project/pythonfmu/) |
