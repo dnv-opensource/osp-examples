@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OspSystemStructure xmlns="http://opensimulationplatform.com/MSMI/OSPSystemStructure" version="0.1">
+  <BaseStepSize>0.01</BaseStepSize>
+  <Algorithm>fixedStep</Algorithm>
+  <Simulators>
+    <Simulator name="resistor" source="Resistor.fmu" />
+    <Simulator name="vector" source="vector.fmu" />
+  </Simulators>
+  <Connections>
+    <VariableConnection>
+      <Variable simulator="vector" name="output[0]" />
+      <Variable simulator="resistor" name="positive_pin_v" />
+    </VariableConnection>
+    <VariableConnection>
+      <Variable simulator="vector" name="output[1]" />
+      <Variable simulator="resistor" name="negative_pin_v" />
+    </VariableConnection>
+    <VariableConnection>
+      <Variable simulator="resistor" name="positive_pin_i" />
+      <Variable simulator="vector" name="input[0]" />
+    </VariableConnection>
+    <VariableConnection>
+      <Variable simulator="resistor" name="negative_pin_i" />
+      <Variable simulator="vector" name="input[1]" />
+    </VariableConnection>
+  </Connections>
+</OspSystemStructure>
